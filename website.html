@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+e   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAV Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        #content {
+            position: relative;
+            width: 100%;
+            height: 400vh;
+        }
+
+        #landing {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #portfolio-section {
+            position: absolute;
+            top: 200vh;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            padding: 5rem 2rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tiles-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            margin-bottom: 5rem;
+        }
+
+        .tile {
+            background-color: rgba(30, 30, 30, 0.8);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tile:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(113, 59, 219, 0.3);
+        }
+
+        .tile h3 {
+            color: #a98eff;
+        }
+
+        .tile p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .tile .date {
+            font-size: 0.8rem;
+            color: #8f9cb7;
+        }
+        
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: #1e1e1e;
+            margin: 10% auto;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 80%;
+            max-width: 700px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(113, 59, 219, 0.4);
+            transform: scale(0.7);
+            transition: transform 0.3s ease;
+            color: #f5f5f5;
+        }
+
+        .modal.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .close {
+            color: #a98eff;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .close:hover {
+            color: #7b42f5;
+        }
+
+        .modal-title {
+            color: #a98eff;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .links-section {
+            margin-top: 4rem;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .links-section h2 {
+            margin-bottom: 2rem;
+            color: #a98eff;
+        }
+
+        .links-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .link-item {
+            padding: 0.8rem 1.5rem;
+            background-color: rgba(63, 81, 181, 0.2);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #f5f5f5;
+            border: 1px solid rgba(113, 59, 219, 0.3);
+        }
+
+        .link-item:hover {
+            background-color: rgba(113, 59, 219, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: #a98eff;
+            font-size: 1.5rem;
+        }
+
+
+        /* Title container with logo */
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-bottom: 1rem;
+    min-height: 60px; /* Increased height for the container */
+}
+
+.title-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.company-name {
+    font-size: 0.9rem;
+    color: #8f9cb7;
+    margin-top: 0.3rem;
+}
+
+.company-logo {
+    height: 100%; /* Logo takes full height of container */
+    width: auto;
+    max-width: 50px;
+    margin-left: 10px;
+    object-fit: contain;
+    order: 2;
+}
+
+/* Existing tile styles remain the same */
+.tile h3 {
+    margin-bottom: 0; /* Remove bottom margin as it's now handled by title-container */
+    color: #a98eff;
+}
+
+
+/* More Info hover effect */
+.more-info {
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    width: 100%;
+    background-color: rgba(113, 59, 219, 0.8);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    transition: bottom 0.3s ease;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    font-weight: bold;
+}
+
+.tile {
+    position: relative;
+    overflow: hidden;
+}
+
+.tile:hover .more-info {
+    bottom: 0;
+}
+
+
+        /* Modal header with logo */
+        .modal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loading">Loading 3D elements...</div>
+
+    <div id="content">
+        <section id="landing">
+            <!-- Empty for 3D text -->
+        </section>
+
+        <section id="portfolio-section">
+            <div style="width: 100%; max-width: 1200px;">
+                <h2 style="color: #a98eff; font-size: 5rem; padding-bottom: 0.7rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">Experience</h2>
+            </div> 
+
+            <div class="tiles-container">
+                <div class="tile">
+                    <div class="title-container">
+                        <div class="title-text">
+                            <h3>Chief Technology Officer</h3>
+                            <div class="company-name">SafetyEHD</div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/navkumarr/safetyehd/refs/heads/master/src/assets/Untitled(1).png?token=GHSAT0AAAAAAC5ZVGRULORYVYBU5DALGADGZ6CPQTA" 
+                        alt="Company Logo" class="company-logo" style="overflow: hidden; width: 100%; height: 100%;">
+                    </div>
+                    <p>Developed AI model for OSHA-approved practices, led digital marketing campaigns,
+                        achieved ~$60K ARR within 90 days. Received multiple 7-figure seed funding offers.</p>
+                    <div class="date">September 2024 - Present</div>
+                    <div class="more-info">More Info</div>
+                </div>
+                <div class="tile">
+                    <div class="title-container">
+                        <div class="title-text">
+                            <h3>Global Youth Advisor</h3>
+                            <div class="company-name">Google</div>
+                        </div>
+                        <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Company Logo" class="company-logo">
+                    </div>
+                    <p>Developed AI model for OSHA-approved practices, led digital marketing campaigns,
+                        achieved ~$60K ARR within 90 days. Received multiple 7-figure seed funding offers.</p>
+                    <div class="date">September 2024 - Present</div>
+                    <div class="more-info">More Info</div>
+                </div>
+                <div class="tile">
+                    <div class="title-container">
+                        <div class="title-text">
+                            <h3 style="font-size: 1rem">Technology/Content Intern</h3>
+                            <div class="company-name">Minneapolis Dept. of Health</div>
+                        </div>
+                        <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Company Logo" class="company-logo">
+                    </div>
+                    <p>Developed AI model for OSHA-approved practices, led digital marketing campaigns,
+                        achieved ~$60K ARR within 90 days. Received multiple 7-figure seed funding offers.</p>
+                    <div class="date">September 2024 - Present</div>
+                    <div class="more-info">More Info</div>
+                </div>
+            </div>
+
+
+
+
+            <div style="width: 100%; max-width: 1200px;">
+                <h2 style="color: #a98eff; font-size: 5rem; padding-bottom: 0.7rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">Leadership</h2>
+            </div> 
+            <div class="tiles-container">
+                <div class="tile">
+                    <div class="title-container">
+                        <div class="title-text">
+                            <h3>Chief Technology Officer</h3>
+                            <div class="company-name">SafetyEHD</div>
+                        </div>
+                        <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Company Logo" class="company-logo">
+                    </div>
+                    <p>Developed AI model for OSHA-approved practices, led digital marketing campaigns,
+                        achieved ~$60K ARR within 90 days. Received multiple 7-figure seed funding offers.</p>
+                    <div class="date">September 2024 - Present</div>
+                    <div class="more-info">More Info</div>
+                </div>
+                <div class="tile">
+                    <div class="title-container">
+                        <div class="title-text">
+                            <h3>Chief Technology Officer</h3>
+                            <div class="company-name">SafetyEHD</div>
+                        </div>
+                        <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Company Logo" class="company-logo">
+                    </div>
+                    <p>Developed AI model for OSHA-approved practices, led digital marketing campaigns,
+                        achieved ~$60K ARR within 90 days. Received multiple 7-figure seed funding offers.</p>
+                    <div class="date">September 2024 - Present</div>
+                    <div class="more-info">More Info</div>
+                </div>
+            </div>
+
+
+
+            <div style="width: 100%; max-width: 1200px;">
+                <h2 style="color: #a98eff; font-size: 5rem; padding-bottom: 0.7rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">Publications/Awards</h2>
+            </div> 
+            <div class="tiles-container">
+                <div class="tile">
+                    <div class="title-container">
+                        <div class="title-text">
+                            <h3>Chief Technology Officer</h3>
+                            <div class="company-name">SafetyEHD</div>
+                        </div>
+                        <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Company Logo" class="company-logo">
+                    </div>
+                    <p>Developed AI model for OSHA-approved practices, led digital marketing campaigns,
+                        achieved ~$60K ARR within 90 days. Received multiple 7-figure seed funding offers.</p>
+                    <div class="date">September 2024 - Present</div>
+                    <div class="more-info">More Info</div>
+                </div>
+                <div class="tile">
+                    <div class="title-container">
+                        <div class="title-text">
+                            <h3>Chief Technology Officer</h3>
+                            <div class="company-name">SafetyEHD</div>
+                        </div>
+                        <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Company Logo" class="company-logo">
+                    </div>
+                    <p>Developed AI model for OSHA-approved practices, led digital marketing campaigns,
+                        achieved ~$60K ARR within 90 days. Received multiple 7-figure seed funding offers.</p>
+                    <div class="date">September 2024 - Present</div>
+                    <div class="more-info">More Info</div>
+                </div>
+            </div>
+            <div class="links-section">
+                <h2>Connect With Me</h2>
+                <div class="links-grid">
+                    <a href="https://github.com/navkumarr" class="link-item">GitHub</a>
+                    <a href="mailto:akumar264@wisc.edu" class="link-item">Email</a>
+                    <a href="#" class="link-item">LinkedIn</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+    <!-- Modal for expanded information -->
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <img src="https://pngimg.com/uploads/google/google_PNG19636.png" alt="Company Logo" class="modal-logo">
+                <h2 class="modal-title">Detailed Information</h2>
+            </div>
+            <div class="modal-body">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/loaders/FontLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/geometries/TextGeometry.js"></script>
+    <script>
+        // Initialize Three.js scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x121212);
+        document.body.appendChild(renderer.domElement);
+
+        // Add lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xa98eff, 1);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+
+        const pointLight = new THREE.PointLight(0x4287f5, 1);
+        pointLight.position.set(-5, 5, 5);
+        scene.add(pointLight);
+
+        // Add particle system for background effect
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particleCount = 2000;
+        const posArray = new Float32Array(particleCount * 3);
+
+        for (let i = 0; i < particleCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 50;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const particleMaterial = new THREE.PointsMaterial({
+            size: 0.05,
+            color: 0x7b42f5,
+        });
+
+        const particleSystem = new THREE.Points(particlesGeometry, particleMaterial);
+        scene.add(particleSystem);
+
+        // Position camera
+        camera.position.z = 20;
+
+        // Create 3D text using TextGeometry
+        let textMesh;
+        const fontLoader = new THREE.FontLoader();
+        fontLoader.load('https://unpkg.com/three@0.128.0/examples/fonts/helvetiker_regular.typeface.json', function (font) {
+            // Create text geometry for "NAV"
+            const textGeometry = new THREE.TextGeometry("hi, i'm nav", {
+                font: font,
+                size: 3,
+                height: 1,
+                curveSegments: 12,
+                bevelEnabled: true,
+                bevelThickness: 0.1,
+                bevelSize: 0.05,
+                bevelOffset: 0,
+                bevelSegments: 5
+            });
+
+            // Center the text
+            textGeometry.computeBoundingBox();
+            const textWidth = textGeometry.boundingBox.max.x - textGeometry.boundingBox.min.x;
+            textGeometry.translate(-textWidth / 2, 0, 0);
+
+            // Create gradient material for the text
+            const textMaterials = [
+                new THREE.MeshStandardMaterial({ color: 0xa98eff, metalness: 0.7, roughness: 0.2 }),
+                new THREE.MeshStandardMaterial({ color: 0x7b42f5, metalness: 0.7, roughness: 0.2 })
+            ];
+
+            textMesh = new THREE.Mesh(textGeometry, textMaterials);
+            scene.add(textMesh);
+
+            // Remove loading screen after text is loaded
+            document.querySelector('.loading').style.display = 'none';
+        },
+            // Progress callback
+            function (xhr) {
+                const percentComplete = xhr.loaded / xhr.total * 100;
+                document.querySelector('.loading').textContent = `Loading: ${Math.round(percentComplete)}%`;
+            },
+            // Error callback
+            function (err) {
+                console.error('Error loading font:', err);
+                document.querySelector('.loading').textContent = 'Error loading 3D elements. Please refresh.';
+            });
+
+        // Handle scroll events
+        let scrollY = window.scrollY;
+        let targetScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            targetScrollY = window.scrollY;
+
+            // Show portfolio section when scrolled enough
+            const scrollProgress = targetScrollY / (document.body.scrollHeight - window.innerHeight);
+            if (scrollProgress > 0.3) {
+                document.getElementById('portfolio-section').style.opacity = 1;
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Smooth scrolling
+            scrollY += (targetScrollY - scrollY) * 0.05;
+
+            // Animate text mesh
+            if (textMesh) {
+                // Gentle floating animation
+                textMesh.rotation.y = Math.sin(Date.now() * 0.001) * 0.1;
+                textMesh.position.y = Math.sin(Date.now() * 0.002) * 0.5;
+
+                // Handle camera zoom based on scroll
+                const scrollProgress = Math.min(scrollY / (document.body.scrollHeight - window.innerHeight), 1);
+
+                if (scrollProgress < 0.9) {
+                    // Zoom towards the text
+                    camera.position.z = 20 - scrollProgress * 40;
+                    textMesh.visible = true;
+                } else if (scrollProgress < 0.6) {
+                    // Pass through the text
+                    const zoomPhase = (scrollProgress - 0.3) / 0.3;
+                    camera.position.z = -5 - zoomPhase * 15;
+
+                    // Keep text visible until camera is fully past it (when zoomPhase is close to 1)
+                    textMesh.visible = zoomPhase < 0.9; // Text disappears only at 90% through this phase
+                } else {
+                    // Text is fully behind the camera
+                    textMesh.visible = false;
+                }
+            }
+
+            // Animate particles
+            particleSystem.rotation.x += 0.0003;
+            particleSystem.rotation.y += 0.0003;
+
+            renderer.render(scene, camera);
+        }
+
+        // Start animation
+        animate();
+
+        // Modal functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const tiles = document.querySelectorAll('.tile');
+            const modal = document.querySelector('.modal');
+            const modalTitle = document.querySelector('.modal-title');
+            const modalLogo = document.querySelector('.modal-logo');
+            const modalBody = document.querySelector('.modal-body');
+            const closeBtn = document.querySelector('.close');
+
+            // Add click event to each tile
+            tiles.forEach(tile => {
+                tile.addEventListener('click', function () {
+                    // Get content from the tile
+                    const title = this.querySelector('h3').textContent;
+                    const description = this.querySelector('p').textContent;
+                    const date = this.querySelector('.date').textContent;
+                    const logoSrc = this.querySelector('.company-logo').src;
+
+                    // Populate modal with content
+                    modalTitle.textContent = title;
+                    modalLogo.src = logoSrc;
+                    modalBody.innerHTML = `
+                <p style="margin-bottom: 15px; line-height: 1.6;">${description}</p>
+                <p style="color: #8f9cb7; font-size: 0.9rem;">${date}</p>
+                <div style="margin-top: 20px;">
+                    <h3 style="color: #a98eff; margin-bottom: 10px;">Additional Information</h3>
+                    <p>This section contains more detailed information about this position, responsibilities, achievements, and relevant skills.</p>
+                </div>
+            `;
+
+                    // Show the modal with animation
+                    modal.style.display = 'block';
+                    // Force a reflow before adding the 'show' class for the animation to work
+                    void modal.offsetWidth;
+                    modal.classList.add('show');
+                });
+            });
+
+            // Close modal when clicking the X
+            closeBtn.addEventListener('click', function () {
+                modal.classList.remove('show');
+                // Wait for the animation to complete before hiding the modal
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+            });
+
+            // Close modal when clicking outside the content
+            window.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    modal.classList.remove('show');
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                    }, 300);
+                }
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape' && modal.classList.contains('show')) {
+                    modal.classList.remove('show');
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                    }, 300);
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>
