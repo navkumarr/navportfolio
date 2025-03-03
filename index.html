@@ -46,7 +46,8 @@
             left: 0;
             width: 100%;
             min-height: 100vh;
-            padding: 3rem 1rem; /* Reduced padding for mobile */
+            padding: 3rem 1rem;
+            /* Reduced padding for mobile */
             opacity: 0;
             transition: opacity 0.5s ease;
             display: flex;
@@ -56,18 +57,23 @@
 
         .tiles-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Reduced minimum width */
-            gap: 1.5rem; /* Reduced gap for mobile */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            /* Reduced minimum width */
+            gap: 1.5rem;
+            /* Reduced gap for mobile */
             width: 100%;
             max-width: 1200px;
-            margin: 1.5rem auto; /* Reduced margin for mobile */
-            margin-bottom: 3rem; /* Reduced bottom margin for mobile */
+            margin: 1.5rem auto;
+            /* Reduced margin for mobile */
+            margin-bottom: 3rem;
+            /* Reduced bottom margin for mobile */
         }
 
         .tile {
             background-color: rgba(30, 30, 30, 0.8);
             border-radius: 12px;
-            padding: 1.5rem; /* Reduced padding for mobile */
+            padding: 1.5rem;
+            /* Reduced padding for mobile */
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -76,21 +82,27 @@
             overflow: hidden;
         }
 
-        .tile:hover, .tile:active { /* Added active state for touch devices */
-            transform: translateY(-5px); /* Reduced movement for mobile */
+        .tile:hover,
+        .tile:active {
+            /* Added active state for touch devices */
+            transform: translateY(-5px);
+            /* Reduced movement for mobile */
             box-shadow: 0 10px 20px rgba(113, 59, 219, 0.3);
         }
 
         .tile h3 {
             color: #a98eff;
-            font-size: 1.2rem; /* Adjusted font size for mobile */
-            word-wrap: break-word; /* Ensures long titles wrap properly */
+            font-size: 1.2rem;
+            /* Adjusted font size for mobile */
+            word-wrap: break-word;
+            /* Ensures long titles wrap properly */
         }
 
         .tile p {
             margin-bottom: 1rem;
             line-height: 1.5;
-            font-size: 0.9rem; /* Adjusted font size for mobile */
+            font-size: 0.9rem;
+            /* Adjusted font size for mobile */
         }
 
         .tile .date {
@@ -115,10 +127,13 @@
 
         .modal-content {
             background-color: #1e1e1e;
-            margin: 5% auto; /* Reduced top margin for mobile */
-            padding: 20px; /* Reduced padding for mobile */
+            margin: 5% auto;
+            /* Reduced top margin for mobile */
+            padding: 20px;
+            /* Reduced padding for mobile */
             border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 90%; /* Increased width for mobile */
+            width: 90%;
+            /* Increased width for mobile */
             max-width: 700px;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(113, 59, 219, 0.4);
@@ -143,38 +158,47 @@
             font-weight: bold;
             cursor: pointer;
             transition: color 0.2s ease;
-            padding: 0 10px; /* Added padding for easier tapping */
+            padding: 0 10px;
+            /* Added padding for easier tapping */
         }
 
-        .close:hover, .close:active { /* Added active state for touch devices */
+        .close:hover,
+        .close:active {
+            /* Added active state for touch devices */
             color: #7b42f5;
         }
 
         .modal-title {
             color: #a98eff;
-            font-size: 1.5rem; /* Adjusted font size for mobile */
+            font-size: 1.5rem;
+            /* Adjusted font size for mobile */
         }
 
         .links-section {
-            margin-top: 3rem; /* Reduced margin for mobile */
+            margin-top: 3rem;
+            /* Reduced margin for mobile */
             width: 100%;
             max-width: 800px;
             text-align: center;
-            padding: 1.5rem; /* Reduced padding for mobile */
+            padding: 1.5rem;
+            /* Reduced padding for mobile */
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .links-section h2 {
-            margin-bottom: 1.5rem; /* Reduced margin for mobile */
+            margin-bottom: 1.5rem;
+            /* Reduced margin for mobile */
             color: #a98eff;
-            font-size: 2rem; /* Adjusted font size for mobile */
+            font-size: 2rem;
+            /* Adjusted font size for mobile */
         }
 
         .links-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 1rem; /* Reduced gap for mobile */
+            gap: 1rem;
+            /* Reduced gap for mobile */
         }
 
         .link-item {
@@ -185,11 +209,15 @@
             text-decoration: none;
             color: #f5f5f5;
             border: 1px solid rgba(113, 59, 219, 0.3);
-            margin-bottom: 0.5rem; /* Added margin for better spacing on mobile */
-            min-width: 120px; /* Ensures buttons aren't too small on mobile */
+            margin-bottom: 0.5rem;
+            /* Added margin for better spacing on mobile */
+            min-width: 120px;
+            /* Ensures buttons aren't too small on mobile */
         }
 
-        .link-item:hover, .link-item:active { /* Added active state for touch devices */
+        .link-item:hover,
+        .link-item:active {
+            /* Added active state for touch devices */
             background-color: rgba(113, 59, 219, 0.4);
             transform: translateY(-3px);
         }
@@ -206,7 +234,8 @@
             align-items: center;
             z-index: 1000;
             color: #a98eff;
-            font-size: 1.2rem; /* Reduced for mobile */
+            font-size: 1.2rem;
+            /* Reduced for mobile */
         }
 
         /* Title container with logo */
@@ -215,18 +244,21 @@
             justify-content: space-between;
             align-items: stretch;
             margin-bottom: 1rem;
-            min-height: 50px; /* Reduced height for mobile */
+            min-height: 50px;
+            /* Reduced height for mobile */
         }
 
         .title-text {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            width: calc(100% - 60px); /* Ensure text doesn't overflow */
+            width: calc(100% - 60px);
+            /* Ensure text doesn't overflow */
         }
 
         .company-name {
-            font-size: 0.8rem; /* Reduced for mobile */
+            font-size: 0.8rem;
+            /* Reduced for mobile */
             color: #8f9cb7;
             margin-top: 0.2rem;
         }
@@ -234,7 +266,8 @@
         .company-logo {
             height: 100%;
             width: auto;
-            max-width: 40px; /* Reduced for mobile */
+            max-width: 40px;
+            /* Reduced for mobile */
             margin-left: 10px;
             object-fit: contain;
             order: 2;
@@ -256,7 +289,9 @@
             font-weight: bold;
         }
 
-        .tile:hover .more-info, .tile:active .more-info { /* Added active state for touch */
+        .tile:hover .more-info,
+        .tile:active .more-info {
+            /* Added active state for touch */
             bottom: 0;
         }
 
@@ -264,52 +299,62 @@
         .modal-header {
             display: flex;
             align-items: center;
-            margin-bottom: 15px; /* Reduced for mobile */
-            flex-wrap: wrap; /* Allow wrapping on small screens */
+            margin-bottom: 15px;
+            /* Reduced for mobile */
+            flex-wrap: wrap;
+            /* Allow wrapping on small screens */
         }
 
         .modal-logo {
-            width: 30px; /* Reduced for mobile */
-            height: 30px; /* Reduced for mobile */
+            width: 30px;
+            /* Reduced for mobile */
+            height: 30px;
+            /* Reduced for mobile */
             margin-right: 10px;
             object-fit: contain;
         }
 
         .leadership-tile {
-            height: auto; /* Make height responsive */
-            min-height: 400px; /* Minimum height */
+            height: auto;
+            /* Make height responsive */
+            min-height: 400px;
+            /* Minimum height */
             display: flex;
             flex-direction: column;
         }
 
         .leadership-image {
             width: 100%;
-            height: 150px; /* Reduced for mobile */
+            height: 150px;
+            /* Reduced for mobile */
             margin-top: 1rem;
             margin-bottom: 1rem;
             border-radius: 8px;
             object-fit: cover;
         }
-        
+
         /* Section titles responsiveness */
         #portfolio-section h2 {
             color: #a98eff;
-            font-size: 3rem; /* Reduced font size for mobile */
+            font-size: 3rem;
+            /* Reduced font size for mobile */
             padding-bottom: 0.5rem;
             margin-bottom: 1rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             width: 100%;
-            text-align: center; /* Center text on mobile */
+            text-align: center;
+            /* Center text on mobile */
         }
-        
+
         /* Responsive iframe containers */
         .iframe-container {
             position: relative;
             overflow: hidden;
             width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
         }
-        
+
         .iframe-container iframe {
             position: absolute;
             top: 0;
@@ -318,50 +363,50 @@
             height: 100%;
             border: none;
         }
-        
+
         /* Media queries for different screen sizes */
         @media (max-width: 768px) {
             #portfolio-section h2 {
                 font-size: 2.5rem;
             }
-            
+
             .tile h3 {
                 font-size: 1.1rem;
             }
-            
+
             .modal-content {
                 width: 95%;
                 margin: 10% auto 5%;
                 padding: 15px;
             }
-            
+
             .modal-body {
                 font-size: 0.9rem;
             }
         }
-        
+
         @media (max-width: 480px) {
             #portfolio-section h2 {
                 font-size: 2rem;
             }
-            
+
             .tiles-container {
                 grid-template-columns: 1fr;
             }
-            
+
             .tile {
                 padding: 1.2rem;
             }
-            
+
             .modal-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            
+
             .modal-logo {
                 margin-bottom: 10px;
             }
-            
+
             .modal-title {
                 font-size: 1.3rem;
             }
@@ -392,7 +437,9 @@
                         <img src="Untitled(1).png" alt="Company Logo" class="company-logo"
                             style="overflow: hidden; width: 100%; height: 100%;">
                     </div>
-                    <p>Work on both frontend/backend and in business operations for a good cause. Achieved ~$60K ARR within 90 days of monetization, Received multiple 7-figure/8-figure seed funding offers from venture capital/other firms.</p>
+                    <p>Work on both frontend/backend and in business operations for a good cause. Achieved ~$60K ARR
+                        within 90 days of monetization, Received multiple 7-figure/8-figure seed funding offers from
+                        venture capital/other firms.</p>
                     <div class="date">September 2024 - Present</div>
                     <div class="more-info">More Info</div>
                 </div>
@@ -405,7 +452,9 @@
                         <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"
                             alt="Company Logo" class="company-logo">
                     </div>
-                    <p>Provide insight on Google products during all stages of launch, especially AI products and features. Speak at various panels and summits, notably a panel with ~27,000 Googlers at annual all-hands conference.</p>
+                    <p>Provide insight on Google products during all stages of launch, especially AI products and
+                        features. Speak at various panels and summits, notably a panel with ~27,000 Googlers at annual
+                        all-hands conference.</p>
                     <div class="date">May 2022 - Present</div>
                     <div class="more-info">More Info</div>
                 </div>
@@ -418,7 +467,9 @@
                         <img src="https://raw.githubusercontent.com/navkumarr/navportfolio/refs/heads/main/Untitled(2).png"
                             alt="Company Logo" class="company-logo">
                     </div>
-                    <p>Wrote articles and created video content highlighting the impact of the Climate Legacy Initiative on Minneapolis residents. The initiative is a pledge from the city to become fully carbon-neutral by 2050.</p>
+                    <p>Wrote articles and created video content highlighting the impact of the Climate Legacy Initiative
+                        on Minneapolis residents. The initiative is a pledge from the city to become fully
+                        carbon-neutral by 2050.</p>
                     <div class="date">May 2024 - August 2024</div>
                     <div class="more-info">More Info</div>
                 </div>
@@ -469,10 +520,13 @@
                             <div class="company-name">Navigating Admissions Post-SFFA</div>
                         </div>
                     </div>
-                    <div class="iframe-container" style="flex-grow: 1; margin-top: 1rem; margin-bottom: 1rem; border-radius: 8px; overflow: hidden;">
-                        <iframe src="https://drive.google.com/file/d/16Hg087BZpgge9GmwQ5bvqMZ3ShK_lu9w/preview"></iframe>
+                    <div class="iframe-container"
+                        style="flex-grow: 1; margin-top: 1rem; margin-bottom: 1rem; border-radius: 8px; overflow: hidden;">
+                        <iframe
+                            src="https://drive.google.com/file/d/16Hg087BZpgge9GmwQ5bvqMZ3ShK_lu9w/preview"></iframe>
                     </div>
-                    <p>In the Wisconsin Ideas Conference, this paper discussed higher education admissions after affirmative action was outlawed.</p>
+                    <p>In the Wisconsin Ideas Conference, this paper discussed higher education admissions after
+                        affirmative action was outlawed.</p>
                     <div class="date">April 2024</div>
                     <div class="more-info">More Info</div>
                 </div>
@@ -485,12 +539,14 @@
                         <img src="https://github.com/navkumarr/navportfolio/blob/main/3146788_youtube_logo_icon.png?raw=true"
                             alt="Company Logo" class="company-logo">
                     </div>
-                    <div class="iframe-container" style="flex-grow: 1; margin-top: 1rem; margin-bottom: 1rem; border-radius: 8px; overflow: hidden;">
+                    <div class="iframe-container"
+                        style="flex-grow: 1; margin-top: 1rem; margin-bottom: 1rem; border-radius: 8px; overflow: hidden;">
                         <iframe src="https://tube.rvere.com/embed?v=YJ_ClyiOxtE" title="YouTube video player"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen></iframe>
                     </div>
-                    <p>Amassed millions of impressions on my channel, Nav Tech and Finance. Focus primarily on short-form/snappy content.</p>
+                    <p>Amassed millions of impressions on my channel, Nav Tech and Finance. Focus primarily on
+                        short-form/snappy content.</p>
                     <div class="date">2021 - Present</div>
                     <div class="more-info">More Info</div>
                 </div>
@@ -573,9 +629,9 @@
         fontLoader.load('https://unpkg.com/three@0.128.0/examples/fonts/helvetiker_regular.typeface.json', function (font) {
             // Create text geometry for "hi, i'm nav"
             // Adjust text size based on screen width for mobile
-            const textSize = window.innerWidth < 480 ? 1.8 : 
-                             window.innerWidth < 768 ? 2.5 : 3;
-                             
+            const textSize = window.innerWidth < 480 ? 1.8 :
+                window.innerWidth < 768 ? 2.5 : 3;
+
             const textGeometry = new THREE.TextGeometry("hi, i'm nav", {
                 font: font,
                 size: textSize,
@@ -635,16 +691,16 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-            
+
             // Adjust text size if it exists
             if (textMesh) {
                 scene.remove(textMesh);
-                
+
                 // Reload the text with new size
                 fontLoader.load('https://unpkg.com/three@0.128.0/examples/fonts/helvetiker_regular.typeface.json', function (font) {
-                    const textSize = window.innerWidth < 480 ? 1.8 : 
-                                     window.innerWidth < 768 ? 2.5 : 3;
-                    
+                    const textSize = window.innerWidth < 480 ? 1.8 :
+                        window.innerWidth < 768 ? 2.5 : 3;
+
                     const textGeometry = new THREE.TextGeometry("hi, i'm nav", {
                         font: font,
                         size: textSize,
@@ -770,11 +826,11 @@
                         modalLogo.style.display = 'none';
                     }
 
-// Get the company name from the tile
-const companyName = this.querySelector('.company-name').textContent;
+                    // Get the company name from the tile
+                    const companyName = this.querySelector('.company-name').textContent;
 
-// Update the modal header to include company name
-document.querySelector('.modal-header').innerHTML = `
+                    // Update the modal header to include company name
+                    document.querySelector('.modal-header').innerHTML = `
     <img src="${logoSrc}" alt="Company Logo" class="modal-logo" style="display: ${logoSrc ? 'block' : 'none'}">
     <div>
         <h2 class="modal-title">${title}</h2>
@@ -782,7 +838,7 @@ document.querySelector('.modal-header').innerHTML = `
     </div>
 `;
 
-modalBody.innerHTML = `
+                    modalBody.innerHTML = `
     <p style="margin-bottom: 15px; line-height: 1.6;">${detailedContent}</p>
     <p style="color: #8f9cb7; font-size: 0.9rem;">${date}</p>
 `;
