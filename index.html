@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
@@ -150,8 +151,8 @@
         
         .contact-details { flex-grow: 1; overflow: hidden; }
         .contact-name { font-weight: bold; display: flex; justify-content: space-between; }
-        .contact-name span:last-child { font-weight: normal; color: #8e8e93; font-size: 14px; }
-        .contact-preview { color: #8e8e93; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .contact-name span:last-child { font-weight: normal; color: #8e8e93; font-size: 11px; }
+        .contact-preview { color: #8e8e93; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
         /* Chat View */
         .chat-view { display: flex; flex-direction: column; height: 100%; }
@@ -334,29 +335,463 @@
         .taskbar-link { color: var(--text-secondary); text-decoration: none; font-weight: 500; font-size: 14px; transition: color 0.2s ease, transform 0.2s ease; display: inline-block; }
         .taskbar-link:hover { color: var(--text-primary); transform: scale(1.05); }
         
-        /* Mobile Blocker */
-        .mobile-blocker {
-            display: none; /* Hidden by default */
+        /* Mobile Layout */
+        .mobile-view {
+            display: none;
+            flex-direction: column;
+            height: 100vh;
+            background: var(--background-image);
+            background-size: cover;
+            background-position: center;
+            color: var(--text-primary);
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .mobile-three-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .mobile-header {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .mobile-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+        
+        .mobile-header p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .mobile-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .mobile-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 
+                       inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                       0 0 0 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .mobile-section:hover {
+            transform: translateY(-8px) rotateX(5deg);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 
+                       inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                       0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        .mobile-section h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0 0 16px 0;
+            color: var(--accent-color);
+        }
+        
+        .mobile-experience-item {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25),
+                       inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform-style: preserve-3d;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .mobile-experience-item:hover {
+            transform: translateZ(10px) rotateX(2deg);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35),
+                       inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+        
+        .mobile-experience-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .mobile-experience-text {
+            flex: 1;
+        }
+        
+        .mobile-experience-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #333;
+            flex-shrink: 0;
+        }
+        
+        .mobile-experience-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .mobile-experience-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+            color: var(--text-primary);
+        }
+        
+        .mobile-experience-company {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            margin: 0 0 8px 0;
+        }
+        
+        .mobile-experience-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin: 0;
+        }
+        
+        .mobile-blog-post {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25),
+                       inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform-style: preserve-3d;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .mobile-blog-post:hover {
+            transform: translateZ(15px) rotateX(3deg);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
+                       inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+        
+        .mobile-blog-post:last-child {
+            margin-bottom: 0;
+        }
+        
+        .mobile-blog-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+            color: var(--text-primary);
+        }
+        
+        .mobile-blog-date {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin: 0 0 8px 0;
+            font-style: italic;
+        }
+        
+        .mobile-blog-preview {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin: 0;
+        }
+        
+        .mobile-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .mobile-link {
+            background: linear-gradient(135deg, var(--accent-color) 0%, rgba(0, 145, 255, 0.8) 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(0, 145, 255, 0.3),
+                       inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transform-style: preserve-3d;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .mobile-link:hover {
+            transform: translateZ(8px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 145, 255, 0.4),
+                       inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Mobile Phone Container */
+        .mobile-phone-container {
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .mobile-phone-container .phone {
+            width: 260px;
+            height: 520px;
+            background: #111;
+            border-radius: 32px;
+            padding: 10px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
+                       inset 0 0 1px 1px rgba(255,255,255,0.1),
+                       0 0 0 1px rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            transform-style: preserve-3d;
+            transition: transform 0.4s ease;
+        }
+        
+        .mobile-phone-container .phone:hover {
+            transform: rotateY(3deg) rotateX(1deg);
+        }
+        
+        .mobile-phone-container .screen {
+            height: 100%;
+            border-radius: 22px;
+        }
+        
+        /* Mobile Spotify Overlay */
+        .mobile-spotify-overlay {
+            border-radius: 20px;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.4s ease;
+        }
+        
+        .mobile-spotify-overlay:hover {
+            transform: translateZ(10px) rotateX(2deg);
+        }
+        
+        .spotify-glass-bg {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 
+                       inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                       0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        .spotify-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .spotify-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .spotify-logo {
+            font-size: 1.5rem;
+            color: #1DB954;
+        }
+        
+        .spotify-track {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .track-info {
+            flex: 1;
+        }
+        
+        .track-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .track-artist {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .spotify-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .control-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .play-btn {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+        }
+        
+        .spotify-link {
+            text-align: center;
+        }
+        
+        .spotify-link a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            border: 1px solid var(--accent-color);
+            border-radius: 20px;
+            background: rgba(0, 145, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.2s ease;
+        }
+        
+        .spotify-link a:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        /* Desktop Prompt Modal */
+        .desktop-prompt-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.9);
-            color: white;
-            flex-direction: column;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            padding: 20px;
-            z-index: 9999;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
         }
-        .mobile-blocker h2 { margin-bottom: 1rem; }
+        
+        .desktop-prompt {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5),
+                       inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            max-width: 400px;
+            transform: scale(0.9);
+            animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        @keyframes scaleIn {
+            to {
+                transform: scale(1);
+            }
+        }
+        
+        .desktop-prompt h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 12px 0;
+        }
+        
+        .desktop-prompt p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin: 0 0 20px 0;
+        }
+        
+        .desktop-prompt-button {
+            background: linear-gradient(135deg, var(--accent-color) 0%, rgba(0, 145, 255, 0.8) 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 145, 255, 0.3),
+                       inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .desktop-prompt-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 145, 255, 0.4),
+                       inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
 
         /* Responsive Design */
         @media (max-width: 1024px) {
-            body > #root > div { display: none; }
-            .mobile-blocker { display: flex; }
+            .desktop-view { display: none; }
+            .mobile-view { display: flex; }
         }
         @media (min-width: 1025px) and (max-width: 1200px) {
             .desktop { flex-direction: column; }
@@ -582,7 +1017,7 @@ This research represents collaborative work examining critical policy issues in 
                             <div className="window-dot yellow"></div>
                             <div className="window-dot green" onClick={onGreenButtonClick}></div>
                         </div>
-                        <div className="window-title">{title}</div>
+                        <div className="window-title" style={{opacity: 0}}></div>
                         <div style={{width: '58px'}}></div>
                     </div>
                     <div className="modal-content">
@@ -865,6 +1300,212 @@ This research represents collaborative work examining critical policy issues in 
             );
         };
 
+        // Three.js Background Component
+        const ThreeBackground = () => {
+            const canvasRef = React.useRef(null);
+            
+            React.useEffect(() => {
+                if (!window.THREE || !canvasRef.current) return;
+                
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, alpha: true });
+                
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setClearColor(0x000000, 0);
+                
+                // Create floating glass spheres
+                const spheres = [];
+                for (let i = 0; i < 8; i++) {
+                    const geometry = new THREE.SphereGeometry(0.3, 32, 32);
+                    const material = new THREE.MeshPhongMaterial({
+                        color: 0x0091ff,
+                        transparent: true,
+                        opacity: 0.1,
+                        shininess: 100
+                    });
+                    const sphere = new THREE.Mesh(geometry, material);
+                    sphere.position.set(
+                        (Math.random() - 0.5) * 10,
+                        (Math.random() - 0.5) * 10,
+                        (Math.random() - 0.5) * 10
+                    );
+                    spheres.push(sphere);
+                    scene.add(sphere);
+                }
+                
+                // Add ambient light
+                const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+                scene.add(ambientLight);
+                
+                // Add directional light
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+                directionalLight.position.set(1, 1, 1);
+                scene.add(directionalLight);
+                
+                camera.position.z = 5;
+                
+                const animate = () => {
+                    requestAnimationFrame(animate);
+                    
+                    spheres.forEach((sphere, index) => {
+                        sphere.rotation.x += 0.01;
+                        sphere.rotation.y += 0.01;
+                        sphere.position.y += Math.sin(Date.now() * 0.001 + index) * 0.002;
+                    });
+                    
+                    renderer.render(scene, camera);
+                };
+                
+                animate();
+                
+                const handleResize = () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                };
+                
+                window.addEventListener('resize', handleResize);
+                
+                return () => {
+                    window.removeEventListener('resize', handleResize);
+                    renderer.dispose();
+                };
+            }, []);
+            
+            return React.createElement('canvas', { ref: canvasRef, className: 'mobile-three-bg' });
+        };
+        
+        // Mobile Portfolio Component
+        const MobilePortfolio = () => {
+            const [selectedPost, setSelectedPost] = useState(null);
+            const [isFullScreen, setIsFullScreen] = useState(false);
+            const [showDesktopPrompt, setShowDesktopPrompt] = useState(true);
+            
+            const handlePostClick = (post) => {
+                setSelectedPost(post);
+                setIsFullScreen(false);
+            };
+            
+            const handleClosePost = () => {
+                setSelectedPost(null);
+            };
+            
+            const toggleFullScreen = () => {
+                setIsFullScreen(prev => !prev);
+            };
+            
+            return (
+                <div className="mobile-view">
+                    <ThreeBackground />
+                    {showDesktopPrompt && (
+                        <div className="desktop-prompt-overlay" onClick={() => setShowDesktopPrompt(false)}>
+                            <div className="desktop-prompt" onClick={(e) => e.stopPropagation()}>
+                                <h3>🖥️ Better on Desktop!</h3>
+                                <p>This website looks way better on desktop, please check it out there if you want the full experience!</p>
+                                <button className="desktop-prompt-button" onClick={() => setShowDesktopPrompt(false)}>
+                                    Continue on Mobile
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                    <div className="mobile-header">
+                        <h1>Nav's Portfolio</h1>
+                        <p>Student, Developer, Entrepreneur</p>
+                    </div>
+                    
+                    <div className="mobile-content">
+                        <div className="mobile-section">
+                            <h2>My Experience</h2>
+                            {[...experiencesData.professional, ...experiencesData.extracurriculars].map((exp, index) => (
+                                <div key={index} className="mobile-experience-item">
+                                    <div className="mobile-experience-header">
+                                        <div className="mobile-experience-text">
+                                            <div className="mobile-experience-title">{exp.title}</div>
+                                            <div className="mobile-experience-company">{exp.company}</div>
+                                            <div className="mobile-experience-desc">{exp.description[0]}</div>
+                                        </div>
+                                        <img src={exp.logo} alt={`${exp.company} logo`} className="mobile-experience-logo" />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        <div className="mobile-section">
+                            <h2>Music</h2>
+                            <div className="mobile-spotify-overlay">
+                                <div className="spotify-glass-bg">
+                                    <div className="spotify-content">
+                                        <div className="spotify-header">
+                                            <div className="spotify-logo">♫</div>
+                                            <span>each time i romeee • navkabhi</span>
+                                        </div>
+                                        <div className="spotify-track">
+                                            <div className="track-info">
+                                                <div className="track-title">Vienna</div>
+                                                <div className="track-artist">Billy Joel</div>
+                                            </div>
+                                            <div className="spotify-controls">
+                                                <button className="control-btn">⏮</button>
+                                                <button className="control-btn play-btn">▶</button>
+                                                <button className="control-btn">⏭</button>
+                                            </div>
+                                        </div>
+                                        <div className="spotify-link">
+                                            <a href="https://open.spotify.com/playlist/775T5aEdcaPXmKJZKlILQB" target="_blank" rel="noopener noreferrer">
+                                                Open in Spotify
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="mobile-section">
+                            <h2>Messages</h2>
+                            <div className="mobile-phone-container">
+                                <PhoneApp />
+                            </div>
+                        </div>
+                        
+                        <div className="mobile-section">
+                            <h2>Thoughts</h2>
+                            {blogPosts.map(post => (
+                                <div key={post.id} className="mobile-blog-post" onClick={() => handlePostClick(post)}>
+                                    <div className="mobile-blog-title">{post.title}</div>
+                                    <div className="mobile-blog-date">{post.date}</div>
+                                    <div className="mobile-blog-preview">{post.preview || post.content.substring(0, 100) + '...'}</div>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        <div className="mobile-section">
+                            <h2>Connect</h2>
+                            <div className="mobile-links">
+                                <a href="https://github.com/navkumarr" target="_blank" className="mobile-link">GitHub</a>
+                                <a href="https://www.linkedin.com/in/abhinavkumarr/" target="_blank" className="mobile-link">LinkedIn</a>
+                                <a href="https://www.instagram.com/abhhinnav/" target="_blank" className="mobile-link">Instagram</a>
+                                <a href="mailto:akumar264@wisc.edu" className="mobile-link">Email</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {selectedPost && (
+                        <MacOSModal 
+                            title={selectedPost.title} 
+                            onClose={handleClosePost}
+                            onGreenButtonClick={toggleFullScreen}
+                            isFullScreen={isFullScreen}
+                        >
+                            <h2>{selectedPost.title}</h2>
+                            <p><em>{selectedPost.date}</em></p>
+                            <div style={{lineHeight: '1.7'}} dangerouslySetInnerHTML={renderMarkdown(selectedPost.content)} />
+                        </MacOSModal>
+                    )}
+                </div>
+            );
+        };
+        
         // Root Component to manage the entire OS UI
         const PortfolioOS = () => {
              // Effect to manage top bar clock
@@ -881,7 +1522,8 @@ This research represents collaborative work examining critical policy issues in 
             
             return (
                 <StrictMode>
-                    <div className="top-bar">
+                    <div className="desktop-view">
+                        <div className="top-bar">
                         <div className="top-bar-left">
                             <div className="logo">Nav's Portfolio</div>
                             <div className="menu-items">
@@ -929,10 +1571,8 @@ This research represents collaborative work examining critical policy issues in 
                         </div>
                     </div>
 
-                    <div className="mobile-blocker">
-                        <h2>Desktop Recommended</h2>
-                        <p>For the best viewing experience, please visit this page from a desktop computer.</p>
                     </div>
+                    <MobilePortfolio />
                 </StrictMode>
             );
         };
