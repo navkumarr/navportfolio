@@ -431,6 +431,7 @@
                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
             transform-style: preserve-3d;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
         }
         
         .mobile-experience-item:hover {
@@ -1141,6 +1142,20 @@ This research represents collaborative work examining critical policy issues in 
                              <div style={{lineHeight: '1.7'}} dangerouslySetInnerHTML={renderMarkdown(selectedPost.content)} />
                         </MacOSModal>
                     )}
+                    
+                    {selectedExperience && (
+                        <MacOSModal 
+                            title={selectedExperience.company || 'Experience'} 
+                            onClose={handleCloseExperience}
+                            onGreenButtonClick={toggleExperienceFullScreen}
+                            isFullScreen={isFullScreen}
+                        >
+                            <h2>{selectedExperience.title}</h2>
+                            <p><strong>{selectedExperience.company}</strong>{selectedExperience.location && ` | ${selectedExperience.location}`}</p>
+                            {selectedExperience.dates && <p><em>{selectedExperience.dates}</em></p>}
+                            <ul>{selectedExperience.description && selectedExperience.description.map((item, i) => <li key={i}>{item}</li>)}</ul>
+                        </MacOSModal>
+                    )}
                 </div>
             );
         }
@@ -1379,6 +1394,7 @@ This research represents collaborative work examining critical policy issues in 
         // Mobile Portfolio Component
         const MobilePortfolio = () => {
             const [selectedPost, setSelectedPost] = useState(null);
+            const [selectedExperience, setSelectedExperience] = useState(null);
             const [isFullScreen, setIsFullScreen] = useState(false);
             const [showDesktopPrompt, setShowDesktopPrompt] = useState(true);
             
@@ -1389,6 +1405,19 @@ This research represents collaborative work examining critical policy issues in 
             
             const handleClosePost = () => {
                 setSelectedPost(null);
+            };
+            
+            const handleExperienceClick = (exp) => {
+                setSelectedExperience(exp);
+                setIsFullScreen(false);
+            };
+            
+            const handleCloseExperience = () => {
+                setSelectedExperience(null);
+            };
+            
+            const toggleExperienceFullScreen = () => {
+                setIsFullScreen(prev => !prev);
             };
             
             const toggleFullScreen = () => {
@@ -1418,7 +1447,7 @@ This research represents collaborative work examining critical policy issues in 
                         <div className="mobile-section">
                             <h2>My Experience</h2>
                             {[...experiencesData.professional, ...experiencesData.extracurriculars].map((exp, index) => (
-                                <div key={index} className="mobile-experience-item">
+                                <div key={index} className="mobile-experience-item" onClick={() => handleExperienceClick(exp)}>
                                     <div className="mobile-experience-header">
                                         <div className="mobile-experience-text">
                                             <div className="mobile-experience-title">{exp.title}</div>
