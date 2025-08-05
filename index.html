@@ -267,7 +267,7 @@
         .modal-content ul { padding-left: 20px; list-style-position: inside; }
         
         /* Thoughts Section */
-        .thoughts-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+        .thoughts-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1200px; margin: 0 auto; }
         .thought-post {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 16px;
@@ -388,7 +388,7 @@
         /* Hover Banner */
         .hover-banner {
             position: fixed;
-            bottom: 90px;
+            bottom: 50px;
             left: 50%;
             transform: translateX(-50%);
             background: linear-gradient(135deg, var(--accent-color) 0%, rgba(0, 145, 255, 0.9) 100%);
@@ -403,13 +403,18 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             opacity: 0;
-            animation: bannerFadeIn 0.5s ease forwards, bannerFadeOut 0.5s ease forwards 3s;
+            animation: bannerFadeIn 0.5s ease forwards, bannerPulse 2s ease-in-out infinite 1s, bannerFadeOut 0.5s ease forwards 4s;
             pointer-events: none;
         }
         
         @keyframes bannerFadeIn {
             from { opacity: 0; transform: translateX(-50%) translateY(10px); }
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        
+        @keyframes bannerPulse {
+            0%, 100% { transform: translateX(-50%) translateY(0) scale(1); }
+            50% { transform: translateX(-50%) translateY(-2px) scale(1.05); }
         }
         
         @keyframes bannerFadeOut {
@@ -876,6 +881,12 @@
             .desktop-view { display: none; }
             .mobile-view { display: flex; }
         }
+        @media (max-width: 768px) {
+            .thoughts-container { grid-template-columns: 1fr; }
+        }
+        @media (min-width: 769px) and (max-width: 1200px) {
+            .thoughts-container { grid-template-columns: repeat(2, 1fr); }
+        }
         @media (min-width: 1025px) and (max-width: 1200px) {
             .desktop { flex-direction: column; }
             .left-panel { width: 100%; flex-direction: row; height: auto; }
@@ -911,6 +922,29 @@
         };
         
         const blogPosts = [
+            { id: 7, title: "LinkedInmaxxing: How to stay sane this recruiting season", date: "August 5, 2025", preview: "A guide to navigating the chaos of recruiting season while maintaining your sanity and authenticity.", content: `<img src="linkedin.webp" alt="LinkedIn Recruiting Season" style="width: 100%; max-width: 600px; height: auto; border-radius: 8px; margin-bottom: 20px;" />
+
+LinkedIn is the only app I feel nervous to open. When used right, it can be one of the most powerful tools to advance your career. However, when used as intended, it plays on our biggest weaknesses as students and young adults - insecurity. For many of us, the upcoming recruiting season is the most important of our lives thus far. Going into it, however, it’s necessary to remember how LinkedInmaxxing can distort our view of ourselves and the world.
+
+All people, at some point, see greener grass in someone else’s pastures, and we just have to find a way to hop the fence into them. Social networking platforms can make trillions of dollars off this envy. While platforms like Instagram and TikTok target users’ personal insecurities, LinkedIn specifically targets professional ones.
+
+There is no shortage of these professional insecurities, and they can begin as early as high school. For myself, they began as soon as I didn’t get off my dream school’s waitlist. Through my first two years at Wisconsin, even with a resume I am now proud of, I constantly felt that I fell short of my peers—that for every accomplishment I had, someone in my network had something significantly more impressive.
+
+This mindset of comparison was corrosive. Professionally, I felt like I had fallen behind as I failed multiple coding interviews and didn’t hear back from a single cold application out of the hundreds I submitted. On a deeper, personal level, I lost faith in myself and started to believe that the best I could do was any desk job that would take me. Every single night, I would go to bed wondering what other people had that I didn’t. Some nights, I would have no answers; on others, I would have too many.
+
+While this may sound overly dramatic to older generations, this is a story many young people know well. As our post-secondary journeys become increasingly riddled with incessant competition for every opportunity, this story will only become more widespread.
+
+This begs the question, “What can we do to change it?” My answer lies with the 2019 LSU Tigers, or for those who aren’t into sports, Bong Joon-Ho’s Oscar win. 
+
+The first commonality between these and all other major achievements is that success is built upon a mountain of unseen failure and sacrifice. This, in turn, creates its own kind of luck, positioning you for a big break. The players on that championship field and Bong Joon-Ho on that Oscar stage were all atop their own mountains, ready for the opportunity they eventually found. This is a story LinkedIn and social media doesn’t show—a story people don’t care about until you’re on the other side of that break.
+
+The second commonality, in direct opposition with the first one, is that you don’t need to win a championship or an Oscar to be an athlete or a filmmaker. You don’t have to focus on getting better at everything to find purpose in it. I love making music, and I’m fully aware I’ll never be a Kendrik Lamar—and that’s calm. If we strive to be the best at everything and have no flaws, we become one-dimensional, boring people. 
+
+These two lessons dictate that we should set realistic expectations of ourselves. If you’ve never played the piano before, you won’t be playing a Chopin nocturne blindfolded anytime soon. So why not set your expectations to just play “Hot Cross Buns” by the end of the month? Then, by practicing every day and messing up enough times, one day, you might get your lucky break and play the whole thing through.
+
+To tie this all together, it’s unlikely you’ll end up somewhere with a 0.3% acceptance next summer, so setting that as an expectation is a terrible idea. When you set attainable goals, you only need proportional failures and sacrifices to find the lucky break that gets you there. It’s okay to end up at a place with less aura, as long as you find fulfillment internally.
+
+So, while you should definitely use LinkedIn to your advantage, remember that there’s a mountain and break behind every highlight. By creating realistic goals and dedicating yourself to them, you’ll end up with your own highlight reel. Good luck!`}, 
             { id: 4, title: "Apple and OpenAI: is ChatGPT overfitted?", date: "January 15, 2025", preview: "My perspective on the current state of overfitting in AI.", content: `<img src="appleimg.webp" alt="Apple and OpenAI" style="width: 100%; max-width: 600px; height: auto; border-radius: 8px; margin-bottom: 20px;" />
 
 "Overfitting" is the new, hot AI buzzword after Apple recently published a [widely-discussed paper](https://machinelearning.apple.com/research/illusion-of-thinking) highlighting the shortcomings of OpenAI and Claude's flagship models. Similar to other buzzwords like "prompt engineering" and "fine-tuning," overfitting is a central concept in machine learning, with a notable application in large language models (LLMs).
@@ -1113,15 +1147,22 @@ This research represents collaborative work examining critical policy issues in 
         // --- COMPONENTS ---
 
         // Professional Section Component (For Main Window)
-        const Professional = () => {
+        const Professional = ({ hasBeenLoaded, onLoaded }) => {
             const [selectedExperience, setSelectedExperience] = useState(null);
             const [activeCategory, setActiveCategory] = useState('professional');
             const [searchText, setSearchText] = useState("");
-            const [isSearching, setIsSearching] = useState(true);
-            const [loaded, setLoaded] = useState(false);
+            const [isSearching, setIsSearching] = useState(!hasBeenLoaded);
+            const [loaded, setLoaded] = useState(hasBeenLoaded);
             const fullSearchText = "my experience";
 
             useEffect(() => {
+                if (hasBeenLoaded) {
+                    setSearchText(fullSearchText);
+                    setIsSearching(false);
+                    setLoaded(true);
+                    return;
+                }
+
                 let i = 0;
                 const typingInterval = setInterval(() => {
                     setSearchText(fullSearchText.substring(0, i + 1));
@@ -1129,11 +1170,14 @@ This research represents collaborative work examining critical policy issues in 
                     if (i > fullSearchText.length) {
                         clearInterval(typingInterval);
                         setIsSearching(false);
-                        setTimeout(() => setLoaded(true), 100);
+                        setTimeout(() => {
+                            setLoaded(true);
+                            onLoaded();
+                        }, 100);
                     }
                 }, 150);
                 return () => clearInterval(typingInterval);
-            }, []);
+            }, [hasBeenLoaded]);
 
             const renderExperience = (exp, index) => (
                 <div key={index} className="experience-entry" style={{ animationDelay: `${index * 0.1}s` }}>
@@ -1184,15 +1228,22 @@ This research represents collaborative work examining critical policy issues in 
         };
         
         // Thoughts Section Component (For Main Window)
-        const Thoughts = () => {
+        const Thoughts = ({ hasBeenLoaded, onLoaded }) => {
             const [selectedPost, setSelectedPost] = useState(null);
             const [isFullScreen, setIsFullScreen] = useState(false);
             const [searchText, setSearchText] = useState("");
-            const [isSearching, setIsSearching] = useState(true);
-            const [loaded, setLoaded] = useState(false);
+            const [isSearching, setIsSearching] = useState(!hasBeenLoaded);
+            const [loaded, setLoaded] = useState(hasBeenLoaded);
             const fullSearchText = "my thoughts";
 
             useEffect(() => {
+                if (hasBeenLoaded) {
+                    setSearchText(fullSearchText);
+                    setIsSearching(false);
+                    setLoaded(true);
+                    return;
+                }
+
                 let i = 0;
                 const typingInterval = setInterval(() => {
                     setSearchText(fullSearchText.substring(0, i + 1));
@@ -1200,11 +1251,14 @@ This research represents collaborative work examining critical policy issues in 
                     if (i > fullSearchText.length) {
                         clearInterval(typingInterval);
                         setIsSearching(false);
-                        setTimeout(() => setLoaded(true), 100);
+                        setTimeout(() => {
+                            setLoaded(true);
+                            onLoaded();
+                        }, 100);
                     }
                 }, 150);
                 return () => clearInterval(typingInterval);
-            }, []);
+            }, [hasBeenLoaded]);
 
             const handleSelectPost = (post) => {
                 setSelectedPost(post);
@@ -1259,12 +1313,17 @@ This research represents collaborative work examining critical policy issues in 
         // Main Window App Component
         const MainWindowApp = () => {
             const [activeTab, setActiveTab] = useState('professional');
+            const [loadedPages, setLoadedPages] = useState(new Set());
+            
+            const markPageAsLoaded = (page) => {
+                setLoadedPages(prev => new Set([...prev, page]));
+            };
             
             const renderContent = () => {
                 switch (activeTab) {
-                    case 'professional': return <Professional />;
-                    case 'thoughts': return <Thoughts />;
-                    default: return <Professional />;
+                    case 'professional': return <Professional hasBeenLoaded={loadedPages.has('professional')} onLoaded={() => markPageAsLoaded('professional')} />;
+                    case 'thoughts': return <Thoughts hasBeenLoaded={loadedPages.has('thoughts')} onLoaded={() => markPageAsLoaded('thoughts')} />;
+                    default: return <Professional hasBeenLoaded={loadedPages.has('professional')} onLoaded={() => markPageAsLoaded('professional')} />;
                 }
             };
             
@@ -1720,7 +1779,7 @@ This research represents collaborative work examining critical policy issues in 
                     
                     {showHoverBanner && (
                         <div className="hover-banner">
-                            👆 Hover for a surprise
+                            👇🏾 Hover for a surprise
                         </div>
                     )}
                     
